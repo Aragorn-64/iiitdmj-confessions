@@ -8,7 +8,7 @@ exports.login = ((req, res) => {
     }
     else if(pass == process.env.ANS1 || pass == process.env.ANS2){
         // req.session.auth="auth";
-        res.status(200).send("auto")
+        res.status(200).send("auth")
     }
     else{
         // req.session.auth="noauth";
