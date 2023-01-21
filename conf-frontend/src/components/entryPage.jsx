@@ -6,7 +6,7 @@ import {ReactSession} from 'react-client-session'
 export const EntryPage = () => {
     let [pass, setPass] = useState("")
     let checkAuth = () => {
-        axios.post('http://localhost:4000/api/auth', {
+        axios.post('https://conf-api.onrender.com/api/auth', {
             pass: pass
         })
         .then((res) => {
