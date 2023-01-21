@@ -1,20 +1,41 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const session = require('express-session')
+const logger = require('morgan');
+const apiRouter = require('./routes/ApiRoutes');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+require('dotenv').config()
+// console.log(process.env)
 
-var app = express();
+const mongoose = require('mongoose');
+mongoose.connect(
+  process.env.MONGODB_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Connected to MongoDB");
+    }
+  }
+)
+
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({secret: process.env.SESSION_SECRET}))
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.get('/', (req, res, next) => {
+    res.status(200).send('This is just an API, please use the /api route');
+})
+app.use('/api', apiRouter);
 
 module.exports = app;
