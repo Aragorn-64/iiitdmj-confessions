@@ -13,10 +13,11 @@ function App() {
   let [auth, setAuth] = useState(ReactSession.get("authType"))
   let [pass, setPass] = useState("")
   let [posts, setPosts] = useState([])
+  let [count, setCount] = useState(0)
 
 
-  let url = "http://localhost:4000"
-  // let url = "https://conf-api.onrender.com"
+  // let url = "http://localhost:4000"
+  let url = "https://conf-api.onrender.com"
 
   
   let getAllPosts = () => {
@@ -46,37 +47,6 @@ function App() {
         console.log(err);
       })
   }
-  // getAllPosts()
-  useEffect(() => {
-    // console.log(auth)
-    if(auth == "auth"){
-      getAcPosts()
-      console.log("posts :" + posts)
-      // let filtered = posts.filter((post) => {
-      //   console.log(post.status)
-      //   if(post.status == "accepted") return true;
-      //   else return false;
-      // });
-      // let filtered = posts.filter(post => post.status == "accepted")
-      // // setPosts(filtered)
-      // console.log(filtered)
-      // console.log('filtered being set')
-    // getAllPosts()
-    }
-    else if(auth == "admin"){
-      getAllPosts()
-      console.log("posts :" + posts)
-    }
-
-    
-    // setPosts(posts.data.data)
-    
-  }, [auth])
-  // let posts = data.data
-
-  // function getPosts() that returns a list of posts from api
-
-  
 
   let checkAuth = () => {
       axios.post(url+'/api/auth', {
@@ -90,23 +60,61 @@ function App() {
       })
       .catch((err) => console.log(err))
   }
+
   let logoutFun = () => {
     ReactSession.set('authType',"noauth");
     setAuth("noauth")
   }
 
+  let updateFun = (id) => {
+    let putUrl = "https://conf-api.onrender.com/api/post/"+String(id)
+    axios.put(putUrl)
+      .then(() => {
+        console.log("Updated status of "+id) 
+        // window.location.reload()
+        // this.forceUpdate();
+        let newC = count+1;
+        setCount(newC)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      
+  }
 
-  let dummyP = {
-    _id:"63cc469023e6c93e2af94f49",
-    bodyText:"HEllo this is post 5",
-    status:"pending",
-    createdAt:"Wed Jul 28 1993",
-    __v:0
+  
+  let deleteFun = (id) => {
+    let deleteUrl = "https://conf-api.onrender.com/api/post/"+String(id)
+    axios.delete(deleteUrl)
+      .then(() => {
+        console.log("Deleted status of "+id) 
+        let newC = count+1;
+        setCount(newC)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   let AllPosts = posts.map((post) => {
-    return <Post post={post} key={post._id}/>
+    return <Post post={post} key={post._id} deleteFun={deleteFun} updateFun={updateFun}  />
   })
+
+  useEffect(() => {
+    // console.log(auth)
+    if(auth == "auth"){
+      getAcPosts()
+      console.log("posts :" + posts)
+    }
+    else if(auth == "admin"){
+      getAllPosts()
+      console.log("posts :" + posts)
+    }
+
+    
+    // setPosts(posts.data.data)
+    
+  }, [auth, count])
 
   return (
     <div className="App">
