@@ -16,11 +16,15 @@ exports.login = ((req, res) => {
     }
 })
 
+// exports.checkAdmin = ((req, res, next) => {
+//     console.log('reached check admin')
+//     if(req.session.auth == "admin") next();
+//     else res.status(400).send("Not admin!")
+// })
+
 exports.checkAuth = ((req, res, next) => {
-    // if(req.session.auth == "auth" || req.session.auth == "admin"){
-    //     next();
-    // }
-    // else{
-    //     res.status(401).send('Not logged in');
-    // }
+
+    // console.log('reached check log', "session : ", req.session)
+    if(req.body.api_key == process.env.API_SECRET) next();
+    else res.status(400).send("Please login first")
 })

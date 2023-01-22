@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-// const session = require('express-session')
+const session = require('express-session')
 const logger = require('morgan');
 const apiRouter = require('./routes/ApiRoutes');
 const cors = require('cors')
@@ -44,7 +44,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(session({secret: process.env.SESSION_SECRET}))
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true
+}))
 
 app.get('/', (req, res, next) => {
     res.status(200).send('This is just an API, please use the /api route');

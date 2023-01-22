@@ -21,7 +21,9 @@ function App() {
 
   
   let getAllPosts = () => {
-    axios.get(url+"/api/post/")
+    axios.get(url+"/api/post/" ,{
+      api_key: "ablockmomentv2"
+    })
       .then((res) => {
         console.log(res)
         let arr = res.data.data;
@@ -126,7 +128,7 @@ function App() {
         : 
         (
           <>
-            <div className='posts-container'>
+            <div className='posts-container vh-100'>
               {AllPosts}
             </div>
           </>

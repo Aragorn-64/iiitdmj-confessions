@@ -2,7 +2,7 @@ import React from 'react'
 import preview from '../preview.png'
 export const EntryPage = ({checkAuth, pass, setPass}) => {
     // let url = "https://conf-api.onrender.com"
-    let questions = ["Which hostel has A and B block?", "What is the L number of the Audi?"]
+    let questions = ["Which hostel has A and B block?", "What is the L number of the Auditorium?"]
     
     let q = "Which hostel has A and B block?"
     return (
@@ -12,7 +12,7 @@ export const EntryPage = ({checkAuth, pass, setPass}) => {
                     <img className='preview-img' src={preview}alt="preview" />
                 </div>
                 <div className="login-area">
-                    <input placeholder={"Answer this : " + questions[Math.floor(Math.random() * 2)]} className='form-control' type="text" value={pass} onChange={(e) => {setPass(e.target.value)}} name="pass" id="pass" />
+                    <input placeholder={questions[Math.floor(Math.random() * 2)]} className='form-control pass-input' type="text" value={pass} onChange={(e) => {setPass(e.target.value)}} name="pass" id="pass" />
                     
                     <button className='login-btn btn btn-primary' onClick={() => {checkAuth()}}>Enter</button>
                 </div>
