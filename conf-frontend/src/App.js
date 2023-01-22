@@ -54,6 +54,7 @@ function App() {
   }
   return (
     <div className="App">
+      
       {message}
       {!ReactSession.get("authType") || ReactSession.get("authType")=="noauth" ? 
         <EntryPage/> : 
@@ -64,7 +65,6 @@ function App() {
         )
         
       }
-      <addConfession/>
     </div>
   );
 }
