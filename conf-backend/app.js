@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 // const session = require('express-session')
 const logger = require('morgan');
 const apiRouter = require('./routes/ApiRoutes');
+const cors = require('cors')
 
 require('dotenv').config()
 // console.log(process.env)
@@ -27,14 +28,17 @@ mongoose.set('strictQuery', true);
 
 const app = express();
 
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', ['https://iiitdmj-confessions.onrender.com/', 'http://localhost:3000']);
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
+let corsOptions = ['http://localhost:3000', 'https://conf-api.onrender.com/api/*']
+app.use(cors(corsOptions))
+
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
