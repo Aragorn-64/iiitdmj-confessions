@@ -5,24 +5,29 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { EntryPage } from './components/entryPage';
 import { LogoutBtn } from './components/logoutBtn';
+import { Header } from './components/header';
 
 
 function App() {
-  let message;
-  if(!ReactSession.get("authType") || ReactSession.get("authType")=="noauth"){
-    message = "please login"
-  }
-  else{
-    message="logged in"
-  }
+  let url = "http://localhost:4000"
+  // let url = "https://conf-api.onrender.com"
+
+
+  // let message;
+  // if(!ReactSession.get("authType") || ReactSession.get("authType")=="noauth"){
+  //   message = "please login"
+  // }
+  // else{
+  //   message="logged in"
+  // }
 
   // ReactSession.set("authType", "noauth");
 
   let [posts, setPosts] = useState([])
   let getAllPosts = () => {
-    // axios.get("http://conf-api.onrender.com/api/post/")
-    axios.get("http://localhost:4000/api/post/")
+    axios.get(url+"/api/post/")
       .then((data) => {
+        console.log(data)
         setPosts(data.data) 
         console.log(posts)
       })
@@ -46,7 +51,7 @@ function App() {
   let [pass, setPass] = useState("")
 
   let checkAuth = () => {
-      let url = "http://localhost:4000"
+      
       axios.post(url+'/api/auth', {
           pass: pass
       })
@@ -54,6 +59,7 @@ function App() {
           ReactSession.set("authType", res.data);
           setAuth(res.data);
           console.log("res.data :", res.data);
+          setPass("")
       })
       .catch((err) => console.log(err))
   }
@@ -77,15 +83,18 @@ function App() {
 
   return (
     <div className="App">
-      {message}
+
+      <Header auth={auth} logoutFun={logoutFun} />
       {!auth || auth=="noauth" ? 
         <EntryPage checkAuth={checkAuth} pass={pass} setPass={setPass}/>
         : 
         (
-          <div className='posts-container'>
-            {/* {AllPosts} */}
-            <LogoutBtn logoutFun = {logoutFun}  />
-          </div>
+          <>
+            <div className='posts-container'>
+              {/* {AllPosts} */}
+            </div>
+          </>
+          
         )
       }
     </div>
