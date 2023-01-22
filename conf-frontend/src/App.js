@@ -4,6 +4,7 @@ import {Post} from './components/post';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { EntryPage } from './components/entryPage';
+import AddConfession from './components/addConfession';
 
 
 function App() {
@@ -61,7 +62,9 @@ function App() {
             <Post post={dummyP}/>
           </div>
         )
+        
       }
+      <addConfession/>
     </div>
   );
 }
