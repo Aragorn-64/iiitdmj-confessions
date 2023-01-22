@@ -67,7 +67,7 @@ function App() {
   }
 
   let updateFun = (id) => {
-    let putUrl = "https://conf-api.onrender.com/api/post/"+String(id)
+    let putUrl =  url + "/api/post/"+String(id)
     axios.put(putUrl)
       .then(() => {
         console.log("Updated status of "+id) 
@@ -84,7 +84,7 @@ function App() {
 
   
   let deleteFun = (id) => {
-    let deleteUrl = "https://conf-api.onrender.com/api/post/"+String(id)
+    let deleteUrl = url + "/api/post/"+ +String(id)
     axios.delete(deleteUrl)
       .then(() => {
         console.log("Deleted status of "+id) 

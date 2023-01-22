@@ -17,7 +17,7 @@ export const Post = ({post, updateFun, deleteFun}) => {
         {post.title ? (<h5 className="card-title">{post.title} </h5>) : ""}
         <p className="card-text">{post.bodyText}</p>
         {post.status == "pending" && ReactSession.get("authType") == "admin"? (<CensorControl id={idString} updateFun = {updateFun} deleteFun={deleteFun} /> ) : ""}
-        <p className="card-subtitle mb-2 text-muted mb-1">{post.createdAt}</p>
+        <p className="card-subtitle mb-2 text-muted mb-1 date-time">{post.createdAt}</p>
       </div>
     </div>
     </>
