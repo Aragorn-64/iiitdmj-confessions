@@ -9,7 +9,7 @@ export const Header = ({status, auth, logoutFun}) => {
         {!auth || auth=="noauth"? 
         "" : 
         (<>
-            <button className='create-post-btn btn btn-primary'>Post a Confession!</button>
+            <button className='create-post-btn btn btn-primary' data-bs-toggle="modal" data-bs-target="#createModal">Post a Confession!</button>
             <LogoutBtn logoutFun={logoutFun}/>
         </>)} 
     </div>

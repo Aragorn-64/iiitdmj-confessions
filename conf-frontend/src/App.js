@@ -6,30 +6,41 @@ import { useEffect, useState } from 'react';
 import { EntryPage } from './components/entryPage';
 import { LogoutBtn } from './components/logoutBtn';
 import { Header } from './components/header';
+import { CreateModal } from './components/createModal';
 
 
 function App() {
+  let [auth, setAuth] = useState(ReactSession.get("authType"))
+  let [pass, setPass] = useState("")
+  let [posts, setPosts] = useState([])
+
+
   let url = "http://localhost:4000"
   // let url = "https://conf-api.onrender.com"
 
-
-  // let message;
-  // if(!ReactSession.get("authType") || ReactSession.get("authType")=="noauth"){
-  //   message = "please login"
-  // }
-  // else{
-  //   message="logged in"
-  // }
-
-  // ReactSession.set("authType", "noauth");
-
-  let [posts, setPosts] = useState([])
+  
   let getAllPosts = () => {
     axios.get(url+"/api/post/")
-      .then((data) => {
-        console.log(data)
-        setPosts(data.data) 
-        console.log(posts)
+      .then((res) => {
+        console.log(res)
+        let arr = res.data.data;
+        // console.log(arr)
+        setPosts(arr) 
+        // console.log(posts)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  let getAcPosts = () => {
+    axios.get(url+"/api/post/ac")
+      .then((res) => {
+        console.log(res)
+        let arr = res.data.data;
+        // console.log(arr)
+        setPosts(arr) 
+        // console.log(posts)
       })
       .catch((err) => {
         console.log(err);
@@ -37,21 +48,37 @@ function App() {
   }
   // getAllPosts()
   useEffect(() => {
-    getAllPosts()
-    console.log("posts :" + posts)
+    // console.log(auth)
+    if(auth == "auth"){
+      getAcPosts()
+      console.log("posts :" + posts)
+      // let filtered = posts.filter((post) => {
+      //   console.log(post.status)
+      //   if(post.status == "accepted") return true;
+      //   else return false;
+      // });
+      // let filtered = posts.filter(post => post.status == "accepted")
+      // // setPosts(filtered)
+      // console.log(filtered)
+      // console.log('filtered being set')
+    // getAllPosts()
+    }
+    else if(auth == "admin"){
+      getAllPosts()
+      console.log("posts :" + posts)
+    }
+
     
     // setPosts(posts.data.data)
     
-  }, [])
+  }, [auth])
   // let posts = data.data
 
   // function getPosts() that returns a list of posts from api
 
-  let [auth, setAuth] = useState(ReactSession.get("authType"))
-  let [pass, setPass] = useState("")
+  
 
   let checkAuth = () => {
-      
       axios.post(url+'/api/auth', {
           pass: pass
       })
@@ -77,13 +104,14 @@ function App() {
     __v:0
   }
 
-  // let AllPosts = posts.map((post) => {
-  //   return <Post post={post}/>
-  // })
+  let AllPosts = posts.map((post) => {
+    return <Post post={post} key={post._id}/>
+  })
 
   return (
     <div className="App">
 
+      <CreateModal url={url}/>
       <Header auth={auth} logoutFun={logoutFun} />
       {!auth || auth=="noauth" ? 
         <EntryPage checkAuth={checkAuth} pass={pass} setPass={setPass}/>
@@ -91,7 +119,7 @@ function App() {
         (
           <>
             <div className='posts-container'>
-              {/* {AllPosts} */}
+              {AllPosts}
             </div>
           </>
           

@@ -4,6 +4,10 @@ exports.getAllPosts = async () => {
     return await PostModel.find();
 };
 
+exports.getAcceptedPosts = async () => {
+    return await PostModel.find({status: "accepted"});
+};
+
 exports.createPost = async (post) => {
     return await PostModel.create(post);
 };

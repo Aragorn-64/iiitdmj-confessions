@@ -10,6 +10,16 @@ exports.getAllPosts = async (req, res) => {
     }
 };
 
+exports.getAcceptedPosts = async (req, res) => {
+    try {
+        const posts = await postService.getAcceptedPosts();
+        console.log("posts" + posts);
+        res.json({ data: posts, status: "success" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
 exports.createPost = async (req, res) => {
     try {
         if(!req.body.bodyText ){
