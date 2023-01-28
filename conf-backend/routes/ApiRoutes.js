@@ -7,7 +7,8 @@ const {
   getPostById,
   updatePost,
   deletePost,
-  getAcceptedPosts
+  getAcceptedPosts,
+  getPreviewPosts
 } = require('../controllers/PostController');
 
 const {
@@ -18,8 +19,9 @@ const {
 /* GET confession posts. */
 // Auth route
 router.post('/auth', login);
+router.route('/post/prev').get(getPreviewPosts);
 router.route('/post/ac').get(getAcceptedPosts);
-router.use(checkAuth);
+// router.use(checkAuth);
 router.route("/post").get(getAllPosts).post(createPost);
 router.route("/post/:id").get(getPostById).put(updatePost).delete(deletePost);
 

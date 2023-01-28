@@ -20,6 +20,36 @@ exports.getAcceptedPosts = async (req, res) => {
     }
 };
 
+exports.getPreviewPosts = async (req, res) => {
+    let redact = (text) => {
+        let output = text
+        .split(" ")
+        .map(word => {
+            let rand = Math.random();
+            console.log(rand)
+            if(rand < 0.3) return word;
+            // else return "<span className='redacted'>" + "x".repeat(word.length) + "</span>";
+            else return "x".repeat(word.length);
+        })
+        .join(" ");
+        return output;
+    }
+
+    try {
+        let previews = await postService.getPreviewPosts();
+        let redacted = previews.map((prev) => {
+            prev.bodyText = redact(prev.bodyText)
+            if(prev.title) prev.title = redact(prev.title)
+            return prev
+        });
+        console.log("redacted preview objects" + redacted);
+        res.json({ data: redacted, status: "success" });
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }   
+}
+
 exports.createPost = async (req, res) => {
     try {
         if(!req.body.bodyText ){

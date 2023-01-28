@@ -1,11 +1,15 @@
 const PostModel = require('../models/Post')
 
 exports.getAllPosts = async () => {
-    return await PostModel.find();
+    return await PostModel.find().sort({createdAt : -1});
 };
 
 exports.getAcceptedPosts = async () => {
-    return await PostModel.find({status: "accepted"});
+    return await PostModel.find({status: "accepted"}).sort({createdAt : -1});
+};
+
+exports.getPreviewPosts = async () => {
+    return await PostModel.find({status: "accepted"}).sort({createdAt : 1}).limit(3);
 };
 
 exports.createPost = async (post) => {
