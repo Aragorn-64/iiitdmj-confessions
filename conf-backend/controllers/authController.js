@@ -15,7 +15,9 @@ exports.loginJWT = (req, res) => {
         authType : Type
     }, process.env.JWT_KEY)
     res.cookie("token", jtoken, {
-        httpOnly : true
+        httpOnly : true, 
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production',
     }).send({authType : Type, token: jtoken})
 }
 

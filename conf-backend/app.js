@@ -28,8 +28,8 @@ mongoose.set('strictQuery', true);
 
 const app = express();
 
-let corsOptions = ['http://localhost:3000/', 'http://localhost:3000/*', 'https://conf-api.onrender.com/api/*', "*"]
-app.use(cors(corsOptions))
+let corsOptions = ['http://localhost:3000', 'https://conf-api.onrender.com/api/', "https://iiitdmj-confessions.onrender.com/", "localhost:3000"]
+app.use(cors('http://localhost:3000'))
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "http://localhost:3000/*"); // update to match the domain you will make the request from
