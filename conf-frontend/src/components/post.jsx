@@ -8,7 +8,7 @@ export const Post = ({post, updateFun, deleteFun}) => {
 
   
   let idString = String(post._id)
-  // console.log(typeof(idString))
+  // console.log(typeof(idString), idString)
 
   return (
     <>

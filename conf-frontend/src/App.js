@@ -97,7 +97,8 @@ function App() {
 
   
   let deleteFun = (id) => {
-    let deleteUrl = url + "/api/post/"+ +String(id)
+    let deleteUrl = url + "/api/post/"+id
+    console.log(deleteUrl)
     axios.delete(deleteUrl)
       .then(() => {
         console.log("Deleted status of "+id) 
