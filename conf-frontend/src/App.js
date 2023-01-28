@@ -4,9 +4,9 @@ import {Post} from './components/post';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { EntryPage } from './components/entryPage';
-import { LogoutBtn } from './components/logoutBtn';
 import { Header } from './components/header';
 import { CreateModal } from './components/createModal';
+import cookieService from './services/cookieService';
 
 function App() {
   let [auth, setAuth] = useState(ReactSession.get("authType"))
@@ -16,8 +16,8 @@ function App() {
   let [previews, setPreviews] = useState([])
 
 
-  // let url = "http://localhost:4000"
-  let url = "https://conf-api.onrender.com"
+  let url = "http://localhost:4000"
+  // let url = "https://conf-api.onrender.com"
 
   let getPreviewPosts = () => {
     axios.get(url+"/api/post/prev")
@@ -48,7 +48,7 @@ function App() {
   }
 
   let getAcPosts = () => {
-    axios.get(url+"/api/post/ac")
+    axios.get(url+"/api/post/ac", {withCredentials: true})
       .then((res) => {
         // console.log(res)
         let arr = res.data.data;
@@ -66,8 +66,12 @@ function App() {
           pass: pass
       })
       .then((res) => {
-          ReactSession.set("authType", res.data);
-          setAuth(res.data);
+          let servAuthType = res.data.authType;
+          // console.log(servAuthType)
+          // ReactSession.set("authType", res.data.authType);
+          cookieService.set("token", res.data.token)
+          // setAuth(res.data.token);
+          setAuth("auth")
           console.log("res.data :", res.data);
           setPass("")
       })
@@ -75,7 +79,8 @@ function App() {
   }
 
   let logoutFun = () => {
-    ReactSession.set('authType',"noauth");
+    // ReactSession.set('authType',"noauth");
+    cookieService.remove("token")
     setAuth("noauth")
   }
 
@@ -116,11 +121,11 @@ function App() {
 
   useEffect(() => {
     // console.log(auth)
-    if(auth == "auth"){
+    if(auth === "auth"){
       getAcPosts()
       console.log("posts :" + posts)
     }
-    else if(auth == "admin"){
+    else if(auth === "admin"){
       getAllPosts()
       console.log("posts :" + posts)
     }
@@ -138,7 +143,7 @@ function App() {
 
       <CreateModal url={url}/>
       <Header auth={auth} logoutFun={logoutFun} />
-      {!auth || auth=="noauth" ? 
+      {!auth || auth==="noauth" ? 
         <EntryPage checkAuth={checkAuth} pass={pass} previews={previews} setPass={setPass}/>
         : 
         (

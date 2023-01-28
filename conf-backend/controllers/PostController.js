@@ -3,7 +3,7 @@ const postService = require('../services/PostServices')
 exports.getAllPosts = async (req, res) => {
     try {
         const posts = await postService.getAllPosts();
-        console.log("posts" + posts);
+        // console.log("posts" + posts);
         res.json({ data: posts, status: "success" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -13,7 +13,7 @@ exports.getAllPosts = async (req, res) => {
 exports.getAcceptedPosts = async (req, res) => {
     try {
         const posts = await postService.getAcceptedPosts();
-        console.log("posts" + posts);
+        // console.log("posts" + posts);
         res.json({ data: posts, status: "success" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -42,7 +42,7 @@ exports.getPreviewPosts = async (req, res) => {
             if(prev.title) prev.title = redact(prev.title)
             return prev
         });
-        console.log("redacted preview objects" + redacted);
+        // console.log("redacted preview objects" + redacted);
         res.json({ data: redacted, status: "success" });
     }
     catch (err) {
