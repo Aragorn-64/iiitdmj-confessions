@@ -8,24 +8,35 @@ import { LogoutBtn } from './components/logoutBtn';
 import { Header } from './components/header';
 import { CreateModal } from './components/createModal';
 
-
 function App() {
   let [auth, setAuth] = useState(ReactSession.get("authType"))
   let [pass, setPass] = useState("")
   let [posts, setPosts] = useState([])
   let [count, setCount] = useState(0)
+  let [previews, setPreviews] = useState([])
 
 
-  // let url = "http://localhost:4000"
-  let url = "https://conf-api.onrender.com"
+  let url = "http://localhost:4000"
+  // let url = "https://conf-api.onrender.com"
 
-  
-  let getAllPosts = () => {
-    axios.get(url+"/api/post/" ,{
-      api_key: "ablockmomentv2"
-    })
+  let getPreviewPosts = () => {
+    axios.get(url+"/api/post/prev")
       .then((res) => {
-        console.log(res)
+        // console.log(res)
+        let arr = res.data.data;
+        // console.log("preview arr: " + arr)
+        setPreviews(arr)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+
+  let getAllPosts = () => {
+    axios.get(url+"/api/post")
+      .then((res) => {
+        // console.log(res)
         let arr = res.data.data;
         // console.log(arr)
         setPosts(arr) 
@@ -39,7 +50,7 @@ function App() {
   let getAcPosts = () => {
     axios.get(url+"/api/post/ac")
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         let arr = res.data.data;
         // console.log(arr)
         setPosts(arr) 
@@ -113,10 +124,13 @@ function App() {
       console.log("posts :" + posts)
     }
 
+    getPreviewPosts();
     
     // setPosts(posts.data.data)
     
   }, [auth, count])
+
+
 
   return (
     <div className="App">
@@ -124,11 +138,11 @@ function App() {
       <CreateModal url={url}/>
       <Header auth={auth} logoutFun={logoutFun} />
       {!auth || auth=="noauth" ? 
-        <EntryPage checkAuth={checkAuth} pass={pass} setPass={setPass}/>
+        <EntryPage checkAuth={checkAuth} pass={pass} previews={previews} setPass={setPass}/>
         : 
         (
           <>
-            <div className='posts-container vh-100'>
+            <div className='posts-container'>
               {AllPosts}
             </div>
           </>
