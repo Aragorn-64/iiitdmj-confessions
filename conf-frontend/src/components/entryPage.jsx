@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import preview from '../preview.png'
 import {Post} from './post'
 
 export const EntryPage = ({checkAuth, previews ,pass, setPass}) => {
-    let [qno, setQno] = useState(Math.floor(Math.random() * 2))
+    let [qno, setQno] = useState(0)
     // let url = "https://conf-api.onrender.com"
+
     let questions = ["Which hostel has A and B block?", "What is the L number of the Auditorium?"]
     // console.log("previews: " + previews)
     // let q = "Which hostel has A and B block?"
@@ -34,7 +35,7 @@ export const EntryPage = ({checkAuth, previews ,pass, setPass}) => {
                             <button className='btn btn-info'>refresh</button>
                         </div> */}
                         <button className='login-btn btn btn-primary' onClick={() => {checkAuth()}}>Enter</button>
-                        <button className='btn btn-info'>&#8635;</button>
+                        <button className='btn btn-info' onClick={() => setQno((qno+1)%2)}>&#8635;</button>
                     </div>
                     
                 </div>

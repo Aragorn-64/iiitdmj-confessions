@@ -16,8 +16,8 @@ function App() {
   let [previews, setPreviews] = useState([])
 
 
-  // let url = "http://localhost:4000"
-  let url = "https://conf-api.onrender.com"
+  let url = "http://localhost:4000"
+  // let url = "https://conf-api.onrender.com"
 
   let getPreviewPosts = () => {
     axios.get(url+"/api/post/prev")
