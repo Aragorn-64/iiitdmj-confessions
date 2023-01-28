@@ -2,7 +2,8 @@ import './App.css';
 import { ReactSession }  from 'react-client-session';
 import {Post} from './components/post';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import env from "react-dotenv";
 import { EntryPage } from './components/entryPage';
 import { Header } from './components/header';
 import { CreateModal } from './components/createModal';
@@ -16,8 +17,7 @@ function App() {
   let [previews, setPreviews] = useState([])
 
 
-  let url = "http://localhost:4000"
-  // let url = "https://conf-api.onrender.com"
+  let url = env.API_URL
 
   let getPreviewPosts = () => {
     axios.get(url+"/api/post/prev")
@@ -34,7 +34,7 @@ function App() {
 
 
   let getAllPosts = () => {
-    axios.get(url+"/api/post")
+    axios.get(url+"/api/post", {withCredentials: true})
       .then((res) => {
         // console.log(res)
         let arr = res.data.data;
@@ -68,10 +68,10 @@ function App() {
       .then((res) => {
           let servAuthType = res.data.authType;
           // console.log(servAuthType)
-          // ReactSession.set("authType", res.data.authType);
+          ReactSession.set("authType", servAuthType);
           cookieService.set("token", res.data.token)
-          // setAuth(res.data.token);
-          setAuth("auth")
+          setAuth(servAuthType);
+          // setAuth("auth")
           console.log("res.data :", res.data);
           setPass("")
       })
@@ -79,14 +79,14 @@ function App() {
   }
 
   let logoutFun = () => {
-    // ReactSession.set('authType',"noauth");
+    ReactSession.set('authType',"noauth");
     cookieService.remove("token")
     setAuth("noauth")
   }
 
   let updateFun = (id) => {
     let putUrl =  url + "/api/post/"+String(id)
-    axios.put(putUrl)
+    axios.put(putUrl, {withCredentials: true})
       .then(() => {
         console.log("Updated status of "+id) 
         // window.location.reload()
@@ -104,7 +104,7 @@ function App() {
   let deleteFun = (id) => {
     let deleteUrl = url + "/api/post/"+id
     console.log(deleteUrl)
-    axios.delete(deleteUrl)
+    axios.delete(deleteUrl, {withCredentials: true})
       .then(() => {
         console.log("Deleted status of "+id) 
         let newC = count+1;
