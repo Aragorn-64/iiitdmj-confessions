@@ -26,7 +26,7 @@ exports.getPreviewPosts = async (req, res) => {
         .split(" ")
         .map(word => {
             let rand = Math.random();
-            console.log(rand)
+            // console.log(rand)
             if(rand < 0.3) return word;
             // else return "<span className='redacted'>" + "x".repeat(word.length) + "</span>";
             else return "x".repeat(word.length);

@@ -1,3 +1,24 @@
+const jwt = require('jsonwebtoken')
+
+exports.loginJWT = (req, res) => {
+    let {pass} = req.body;
+    pass = String(pass).toLowerCase();
+    let Type = "noauth"
+    if(pass == process.env.MASPASS){
+        Type = "admin"
+    }
+    else if(pass == process.env.ANS1 || pass == process.env.ANS2){
+        Type = "auth"
+    }
+
+    let jtoken = jwt.sign({
+        authType : Type
+    }, process.env.JWT_KEY)
+    res.cookie("token", jtoken, {
+        httpOnly : true
+    }).send(Type)
+}
+
 exports.login = ((req, res) => {
     let {pass} = req.body;
     pass = String(pass).toLowerCase();
@@ -22,9 +43,41 @@ exports.login = ((req, res) => {
 //     else res.status(400).send("Not admin!")
 // })
 
-exports.checkAuth = ((req, res, next) => {
+exports.checkAuthJWT = (req, res, next) => {
+    try {
+        let jtoken = req.cookies.token
+        console.log("token: ", jtoken)
+        let payload = jwt.verify(jtoken, process.env.JWT_KEY)
+        if(payload.authType == "auth" || payload.authType == "admin") next()
+        else res.status(400).send("Please login")
 
-    // console.log('reached check log', "session : ", req.session)
-    if(req.body.api_key == process.env.API_SECRET) next();
-    else res.status(400).send("Please login first")
-})
+    } 
+    catch (err) {
+        console.log(err)
+        if(!req.cookies || !req.cookies.token) res.status(400).send("cookie empty : likely not logged in!")
+        else res.status(500).send(err)
+    }
+}
+
+exports.checkAdminJWT = (req, res, next) => {
+    try {
+        let jtoken = req.cookies.token
+        console.log("token: ", jtoken)
+        let payload = jwt.verify(jtoken, process.env.JWT_KEY)
+        if(payload.authType == "admin") next()
+        else res.status(400).send("Not admin!")
+
+    } 
+    catch (err) {
+        console.log(err)
+        if(!req.cookies || !req.cookies.token) res.status(400).send("cookie empty : likely not logged in!")
+        else res.status(500).send(err)
+    }
+}
+
+// exports.checkAuth = ((req, res, next) => {
+
+//     // console.log('reached check log', "session : ", req.session)
+//     if(req.body.api_key == process.env.API_SECRET) next();
+//     else res.status(400).send("Please login first")
+// })
