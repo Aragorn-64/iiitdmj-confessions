@@ -29,7 +29,7 @@ mongoose.set('strictQuery', true);
 const app = express();
 
 let corsOptions = {
-  origin : ['http://localhost:3000', "https://iiitdmj-confessions.onrender.com/"],
+  origin : process.env.FRONT_URL,
   credentials: true
 }
 app.use(cors(corsOptions))
