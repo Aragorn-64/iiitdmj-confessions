@@ -25,8 +25,9 @@ router.post('/auth', loginJWT);
 router.route('/post/prev').get(getPreviewPosts);
 router.use(checkAuthJWT);
 router.route('/post/ac').get(getAcceptedPosts);
+router.route("/post").post(createPost);
 router.use(checkAdminJWT);
-router.route("/post").get(getAllPosts).post(createPost);
+router.route("/post").get(getAllPosts);
 router.route("/post/:id").get(getPostById).put(updatePost).delete(deletePost);
 
 
