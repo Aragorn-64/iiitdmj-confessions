@@ -20,7 +20,7 @@ function App() {
   let url = env.API_URL
 
   let getPreviewPosts = () => {
-    axios.get(url+"/api/post/prev")
+    axios.get(url+"/api/post/prev", {withCredentials: true})
       .then((res) => {
         // console.log(res)
         let arr = res.data.data;
@@ -141,7 +141,7 @@ function App() {
   return (
     <div className="App">
 
-      <CreateModal url={url}/>
+      <CreateModal url={url} count={count} setCount={setCount}  />
       <Header auth={auth} logoutFun={logoutFun} />
       {!auth || auth==="noauth" ? 
         <EntryPage checkAuth={checkAuth} pass={pass} previews={previews} setPass={setPass}/>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { useState } from "react";
 
-function AddConfession({url}) {
+function AddConfession({url, count, setCount}) {
     const [Title, SetTitle] = useState('');
     const [Body, SetBody] = useState('');
     let [status, setStatus] =useState("no")
@@ -12,7 +12,7 @@ function AddConfession({url}) {
                 title: Title,
                 bodyText: Body
             }
-            axios.post(url + '/api/post', data)
+            axios.post(url + '/api/post', data, {withCredentials: true})
                 .then((res) => {
                     console.log('Created post')
                     setStatus("yes")
@@ -20,8 +20,19 @@ function AddConfession({url}) {
                 .catch((err) => console.log(err))
             SetTitle("")
             SetBody("")
+            console.log("updating count")
+            let nc = count + 1
+            setCount(nc)
         }
     }
+
+    useEffect(()=> {
+        if(status == "yes"){
+            setTimeout(()=> {
+                setStatus("no")
+            }, 1500)
+        }
+    }, [status])
     return (
         <>
             {status == "yes" ? "Post created, please wait for the admin to approve it!" : (
