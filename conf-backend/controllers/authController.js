@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken')
+const Cookies = require('universal-cookie')
+
 
 exports.loginJWT = (req, res) => {
     let {pass} = req.body;
@@ -16,8 +18,8 @@ exports.loginJWT = (req, res) => {
     }, process.env.JWT_KEY)
     res.cookie("token", jtoken, {
         httpOnly : true, 
-        // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        secure: process.env.NODE_ENV === 'production',
+        // sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',  
+        // secure: process.env.NODE_ENV === 'production',
     }).send({authType : Type, token: jtoken})
 }
 
@@ -47,9 +49,13 @@ exports.login = ((req, res) => {
 
 exports.checkAuthJWT = (req, res, next) => {
     try {
+        const cs = new Cookies(req.headers.cookie)
+        let jtokenUni = cs.get('token')
         let jtoken = req.cookies.token
         console.log("token: ", jtoken)
-        let payload = jwt.verify(jtoken, process.env.JWT_KEY)
+        console.log("tokenUni: ", jtokenUni)
+        // let payload = jwt.verify(jtoken, process.env.JWT_KEY)
+        let payload = jwt.verify(jtokenUni, process.env.JWT_KEY)
         if(payload.authType == "auth" || payload.authType == "admin") next()
         else res.status(400).send("Please login")
 
