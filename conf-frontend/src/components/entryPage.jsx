@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from 'react'
-import preview from '../preview.png'
+import React, { useState, useEffect } from 'react'
+// import preview from '../preview.png'
 import {Post} from './post'
 
 export const EntryPage = ({checkAuth, previews ,pass, setPass}) => {
@@ -35,6 +35,7 @@ export const EntryPage = ({checkAuth, previews ,pass, setPass}) => {
                             <button className='btn btn-info'>refresh</button>
                         </div> */}
                         <button className='login-btn btn btn-primary' onClick={() => {checkAuth()}}>Enter</button>
+                        {/* onClick defined like this to not take output of the function but have a anon function that calls checkAuth */}
                         <button className='btn btn-info' onClick={() => setQno((qno+1)%2)}>&#8635;</button>
                     </div>
                     

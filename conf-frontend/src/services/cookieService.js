@@ -12,5 +12,5 @@ class cookieService{
         cookie.remove(key);
     }
 }
-
-export default new cookieService();
+let cs = new cookieService();
+export default cs

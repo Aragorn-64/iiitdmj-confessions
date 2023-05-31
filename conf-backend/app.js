@@ -29,7 +29,7 @@ mongoose.set('strictQuery', true);
 const app = express();
 
 let corsOptions = {
-  origin : process.env.FRONT_URL,
+  origin : [process.env.FRONT_URL, "http://www.uptimerobot.com/"],
   credentials: true
 }
 app.use(cors(corsOptions))
