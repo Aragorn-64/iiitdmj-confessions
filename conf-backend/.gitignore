@@ -1,4 +1,3 @@
 # Nothing ignored for now
 .env
-.env-1
 ./conf-backend/node_modules
