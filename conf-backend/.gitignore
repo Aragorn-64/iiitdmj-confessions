@@ -1,0 +1,3 @@
+# Nothing ignored for now
+./conf-backend/.env
+./conf-backend/node_modules
