@@ -17,6 +17,10 @@ function App() {
   let [count, setCount] = useState(0)
   let [previews, setPreviews] = useState([])
 
+
+  //TODO : when told to login, make it set the auth to noauth and display a overlay message with Please klog in ya kuch
+
+
   let url = env.API_URL
 
   let getPreviewPosts = () => {
