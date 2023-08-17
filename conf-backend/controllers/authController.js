@@ -12,7 +12,7 @@ exports.loginJWT = (req, res) => {
     authType = "auth";
   }
 
-  const jtoken = jwt.sign({ authType }, process.env.JWT_KEY);
+  const jtoken = jwt.sign({ authType }, process.env.JWT_KEY, { expiresIn: '400s' });
   const cookies = new Cookies(req.headers.cookie);
   cookies.set('token', jtoken, { httpOnly: true });
 
@@ -24,7 +24,7 @@ exports.checkAuthJWT = (req, res, next) => {
     const cookies = new Cookies(req.headers.cookie);
     const jtoken = cookies.get('token');
     if (!jtoken) {
-      return res.status(400).send("Please log in (auth)");
+      return res.status(400).send("Please log in (auth) : Missing token");
     }
     const payload = jwt.verify(jtoken, process.env.JWT_KEY);
     if (payload.authType === "auth" || payload.authType === "admin") {
@@ -43,7 +43,7 @@ exports.checkAdminJWT = (req, res, next) => {
     const cookies = new Cookies(req.headers.cookie);
     const jtoken = cookies.get('token');
     if (!jtoken) {
-      return res.status(400).send("Please log in (admin)");
+      return res.status(400).send("Please log in (admin) : Missing token");
     }
     const payload = jwt.verify(jtoken, process.env.JWT_KEY);
     if (payload.authType === "admin") {

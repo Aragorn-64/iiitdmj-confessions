@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
   getAllPosts,
-  createPost, 
+  createPost,
   getPostById,
   updatePost,
   deletePost,

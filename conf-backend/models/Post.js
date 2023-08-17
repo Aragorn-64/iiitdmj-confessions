@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
- 
+
 const postSchema = new Schema({
   title: String, //optional
   bodyText: {
@@ -11,15 +11,15 @@ const postSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-//   reactions: [{}],
+  //   reactions: [{}],
   tag: String,
   status: {
     type: String,
     default: "pending"
   }
-//   reactions: [{likes : {type: Number, default: 0}}]
+  //   reactions: [{likes : {type: Number, default: 0}}]
   //time, titke, text, reactions, tag, comments
 
 });
- 
+
 module.exports = mongoose.model("Post", postSchema);

@@ -1,15 +1,15 @@
 const PostModel = require('../models/Post')
 
 exports.getAllPosts = async () => {
-    return await PostModel.find().sort({createdAt : -1});
+    return await PostModel.find().sort({ createdAt: -1 });
 };
 
 exports.getAcceptedPosts = async () => {
-    return await PostModel.find({status: "accepted"}).sort({createdAt : -1});
+    return await PostModel.find({ status: "accepted" }).sort({ createdAt: -1 });
 };
 
 exports.getPreviewPosts = async () => {
-    return await PostModel.find({status: "accepted"}).sort({createdAt : 1}).limit(3);
+    return await PostModel.find({ status: "accepted" }).sort({ createdAt: -1 }).limit(3);
 };
 
 exports.createPost = async (post) => {
@@ -21,7 +21,7 @@ exports.getPostById = async (id) => {
 
 // exports.updatePost = async (id, post) => {
 exports.updatePost = async (id) => {
-    return await PostModel.findByIdAndUpdate(id, {status: "accepted"});
+    return await PostModel.findByIdAndUpdate(id, { status: "accepted" });
 };
 
 exports.deletePost = async (id) => {

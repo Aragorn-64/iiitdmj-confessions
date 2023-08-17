@@ -23,15 +23,15 @@ exports.getAcceptedPosts = async (req, res) => {
 exports.getPreviewPosts = async (req, res) => {
     let redact = (text) => {
         let output = text
-        .split(" ")
-        .map(word => {
-            let rand = Math.random();
-            // console.log(rand)
-            if(rand < 0.3) return word;
-            // else return "<span className='redacted'>" + "x".repeat(word.length) + "</span>";
-            else return "x".repeat(word.length);
-        })
-        .join(" ");
+            .split(" ")
+            .map(word => {
+                let rand = Math.random();
+                // console.log(rand)
+                if (rand < 0.3) return word;
+                // else return "<span className='redacted'>" + "x".repeat(word.length) + "</span>";
+                else return "x".repeat(word.length);
+            })
+            .join(" ");
         return output;
     }
 
@@ -39,7 +39,7 @@ exports.getPreviewPosts = async (req, res) => {
         let previews = await postService.getPreviewPosts();
         let redacted = previews.map((prev) => {
             prev.bodyText = redact(prev.bodyText)
-            if(prev.title) prev.title = redact(prev.title)
+            if (prev.title) prev.title = redact(prev.title)
             return prev
         });
         // console.log("redacted preview objects" + redacted);
@@ -47,18 +47,18 @@ exports.getPreviewPosts = async (req, res) => {
     }
     catch (err) {
         res.status(500).json({ error: err.message });
-    }   
+    }
 }
 
 exports.createPost = async (req, res) => {
     try {
-        if(!req.body.bodyText ){
+        if (!req.body.bodyText) {
             throw new Error("Confession post body empty");
         }
         let postItem = {
             bodyText: req.body.bodyText
         }
-        if(req.body.title) postItem.title = req.body.title;
+        if (req.body.title) postItem.title = req.body.title;
         const post = await postService.createPost(postItem);
         res.json({ data: post, status: "success" });
     } catch (err) {
